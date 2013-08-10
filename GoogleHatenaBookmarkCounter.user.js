@@ -3,7 +3,7 @@
 // @version        0.1
 // @namespace
 // @author         nariia
-// @description    Show HatenaBookmark Counter on Google search results.
+// @description    Add HatenaBookmark Counter on Google search results.
 // @include        http://www.google.tld/*
 // @include        https://www.google.tld/*
 // @grant          GM_xmlhttpRequest
