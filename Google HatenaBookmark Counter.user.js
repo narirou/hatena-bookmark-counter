@@ -25,8 +25,8 @@
 			var link = item.childNodes[0];
 			var url = "http://b.hatena.ne.jp/entry/json/?url=" + encodeURI( link.href );
 
-			// remove tracking
-			// link.removeAttribute( "onmousedown" );
+			// remove tracking (ついでに)
+			link.removeAttribute( "onmousedown" );
 
 			// http request
 			(function( item, url ) {
