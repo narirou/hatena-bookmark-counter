@@ -55,7 +55,6 @@
 	// Start
 	counter( document.getElementById( "rso" ) );
 
-	// Event Listener
 	// Autopagerize Event
 	document.addEventListener( "AutoPagerize_DOMNodeInserted", function( event ) {
 		counter( event.target );
@@ -73,7 +72,7 @@
 
 	// HTML
 	var addHtml = function( item, url, count ) {
-		var icon = document.createElement("a");
+		var icon = document.createElement( "a" );
 		icon.title = "Hatena Bookmark";
 		icon.href = url;
 		icon.className = counterClassName( count );
@@ -84,8 +83,7 @@
 	// ClassName
 	var counterClassName = function( count ) {
 		var baseClassName = "_hatenaBookmarkCounter";
-		var n = parseInt( count );
-
+		var n = parseInt( count, 10 );
 		switch( false ) {
 			case !(n < 4):
 				return baseClassName + "_0";
