@@ -59,20 +59,21 @@
 	// Start
 	counter( rso );
 
-	// Autopagerize Event
-	document.addEventListener( 'AutoPagerize_DOMNodeInserted', function( event ) {
-		counter( event.target );
-	}, false );
+	// Insert Event
+	var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
 
-	// Google Ajax Event
-	document.addEventListener( 'DOMNodeInserted', function( event ){
-		var target = event.target;
-		if( target.id === 'ires' ) {
-			setTimeout( function() {
-				counter( target.childNodes[0] );
-			}, 0 );
-		}
-	}, false );
+	var observer = new MutationObserver( function( mutations ){
+		mutations.forEach( function( mutation ) {
+			var nodes = mutation.addedNodes;
+			for( var i = 0, len = nodes.length; i < len; i++ ) {
+				if( nodes[i].id === 'ires' || nodes[i].id === 'rso' ) {
+					counter( nodes[i] );
+				}
+			}
+		});
+	});
+
+	observer.observe( res, { childList: true, subtree: true } );
 
 	// HTML
 	var addHtml = function( item, url, count ) {
