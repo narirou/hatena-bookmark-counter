@@ -102,43 +102,41 @@
 	};
 
 	// CSS
-	var addCss = (function() {
-		var css = '';
-		css += '#res .r{';
-		css +=     'overflow-x: visible !important;';
-		css +=     'display: inline !important;';
-		css += '}';
-		css += '#res .r a[class^="_hatenaBookmarkCounter"]{';
-		css +=     'color: #fff !important;';
-		css +=     'font-size: 11px;';
-		css +=     'font-weight: bold;';
-		css +=     'padding: 2px 7px;';
-		css +=     'position: relative;';
-		css +=     'top: -2px;';
-		css +=     'left: 7px;';
-		css +=     'text-decoration: none;';
-		css +=     'border-radius: 2px;';
-		css += '}';
-		css += '#res .r a[class^="_hatenaBookmarkCounter"] span{';
-		css +=     'font-weight: normal;';
-		css += '}';
-		css += '#res .r a[class^="_hatenaBookmarkCounter"]:hover{';
-		css +=     'background-color: #f3cb7e;';
-		css +=     'color: #c87209 !important;';
-		css += '}';
-		css += '#res .r ._hatenaBookmarkCounter_0{';
-		css +=     'background-color: #93cfea;';
-		css += '}';
-		css += '#res .r ._hatenaBookmarkCounter_1{';
-		css +=     'background-color: #74c2e4';
-		css += '}';
-		css += '#res .r ._hatenaBookmarkCounter_2{';
-		css +=     'background-color: #5bb8df';
-		css += '}';
-		css += '#res .r ._hatenaBookmarkCounter_3{';
-		css +=     'background-color: #39a9d9';
-		css += '}';
-		GM_addStyle( css );
-	})();
+	GM_addStyle([
+		'#res .r{',
+			'overflow-x: visible !important;',
+			'display: inline !important;',
+		'}',
+		'#res .r a[class^="_hatenaBookmarkCounter"]{',
+			'color: #fff !important;',
+			'font-size: 11px;',
+			'font-weight: bold;',
+			'padding: 2px 7px;',
+			'position: relative;',
+			'top: -2px;',
+			'left: 7px;',
+			'text-decoration: none;',
+			'border-radius: 2px;',
+		'}',
+		'#res .r a[class^="_hatenaBookmarkCounter"] span{',
+			'font-weight: normal;',
+		'}',
+		'#res .r a[class^="_hatenaBookmarkCounter"]:hover{',
+			'background-color: #f3cb7e;',
+			'color: #c87209 !important;',
+		'}',
+		'#res .r ._hatenaBookmarkCounter_0{',
+			'background-color: #93cfea;',
+		'}',
+		'#res .r ._hatenaBookmarkCounter_1{',
+			'background-color: #74c2e4',
+		'}',
+		'#res .r ._hatenaBookmarkCounter_2{',
+			'background-color: #5bb8df',
+		'}',
+		'#res .r ._hatenaBookmarkCounter_3{',
+			'background-color: #39a9d9',
+		'}',
+	].join(''));
 
 })( window, document );
