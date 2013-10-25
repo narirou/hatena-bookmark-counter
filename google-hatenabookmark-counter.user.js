@@ -14,35 +14,39 @@
 
 (function( window, document ) {
 
-	// Google HatenaBookmark Counter
+	// Target Element
+	var rso = document.getElementById( 'rso' ),
+		res = document.getElementById( 'res' );
+
+	// Counter
 	var counter = function( target ) {
 		if( ! target ) return;
 
-		var items = target.getElementsByTagName( "h3" );
+		var items = target.getElementsByTagName( 'h3' );
 
 		for( var i = 0, len = items.length; i < len; i++ ) {
 			var item = items[i];
 			var link = item.childNodes[0];
-			var url = "http://b.hatena.ne.jp/entry/json/?url=" + encodeURI( link.href );
+			var url = 'http://b.hatena.ne.jp/entry/json/?url=' + encodeURI( link.href );
 
 			// remove tracking (ついでに)
-			link.removeAttribute( "onmousedown" );
+			link.removeAttribute( 'onmousedown' );
 
 			// http request
 			(function( item, url ) {
 				GM_xmlhttpRequest( {
-					method: "GET",
+					method: 'GET',
 					url: url,
 					onload: function( response ) {
 						var data = response.responseText;
-						if( data === "null" ) {
+						if( data === 'null' ) {
 							return;
 						}
 
 						var json = JSON.parse( data );
 
 						var count = json.count;
-						if( count === "0" ) {
+						if( count === '0' ) {
 							return;
 						}
 						addHtml( item, json.entry_url, count );
@@ -53,17 +57,17 @@
 	};
 
 	// Start
-	counter( document.getElementById( "rso" ) );
+	counter( rso );
 
 	// Autopagerize Event
-	document.addEventListener( "AutoPagerize_DOMNodeInserted", function( event ) {
+	document.addEventListener( 'AutoPagerize_DOMNodeInserted', function( event ) {
 		counter( event.target );
 	}, false );
 
 	// Google Ajax Event
-	document.addEventListener( "DOMNodeInserted", function( event ){
+	document.addEventListener( 'DOMNodeInserted', function( event ){
 		var target = event.target;
-		if( target.id === "ires" ) {
+		if( target.id === 'ires' ) {
 			setTimeout( function() {
 				counter( target.childNodes[0] );
 			}, 0 );
@@ -72,67 +76,67 @@
 
 	// HTML
 	var addHtml = function( item, url, count ) {
-		var icon = document.createElement( "a" );
-		icon.title = "Hatena Bookmark";
+		var icon = document.createElement( 'a' );
+		icon.title = 'Hatena Bookmark';
 		icon.href = url;
 		icon.className = counterClassName( count );
-		icon.innerHTML = count + " <span>users</span>";
+		icon.innerHTML = count + ' <span>users</span>';
 		item.appendChild( icon );
 	};
 
 	// ClassName
 	var counterClassName = function( count ) {
-		var baseClassName = "_hatenaBookmarkCounter";
+		var baseClassName = '_hatenaBookmarkCounter';
 		var n = parseInt( count, 10 );
 		switch( false ) {
 			case !(n < 4):
-				return baseClassName + "_0";
+				return baseClassName + '_0';
 			case !(n < 10):
-				return baseClassName + "_1";
+				return baseClassName + '_1';
 			case !(n < 50):
-				return baseClassName + "_2";
+				return baseClassName + '_2';
 			default:
-				return baseClassName + "_3";
+				return baseClassName + '_3';
 		}
 	};
 
 	// CSS
 	var addCss = (function() {
-		var css = "";
-		css += "#res .r{";
-		css +=     "overflow-x: visible !important;";
-		css +=     "display: inline !important;";
-		css += "}";
-		css += "#res .r a[class^='_hatenaBookmarkCounter']{";
-		css +=     "color: #fff !important;";
-		css +=     "font-size: 11px;";
-		css +=     "font-weight: bold;";
-		css +=     "padding: 2px 7px;";
-		css +=     "position: relative;";
-		css +=     "top: -2px;";
-		css +=     "left: 7px;";
-		css +=     "text-decoration: none;";
-		css +=     "border-radius: 2px;";
-		css += "}";
-		css += "#res .r a[class^='_hatenaBookmarkCounter'] span{";
-		css +=     "font-weight: normal;";
-		css += "}";
-		css += "#res .r a[class^='_hatenaBookmarkCounter']:hover{";
-		css +=     "background-color: #f3cb7e;";
-		css +=     "color: #c87209 !important;";
-		css += "}";
-		css += "#res .r ._hatenaBookmarkCounter_0{";
-		css +=     "background-color: #93cfea;";
-		css += "}";
-		css += "#res .r ._hatenaBookmarkCounter_1{";
-		css +=     "background-color: #74c2e4";
-		css += "}";
-		css += "#res .r ._hatenaBookmarkCounter_2{";
-		css +=     "background-color: #5bb8df";
-		css += "}";
-		css += "#res .r ._hatenaBookmarkCounter_3{";
-		css +=     "background-color: #39a9d9";
-		css += "}";
+		var css = '';
+		css += '#res .r{';
+		css +=     'overflow-x: visible !important;';
+		css +=     'display: inline !important;';
+		css += '}';
+		css += '#res .r a[class^="_hatenaBookmarkCounter"]{';
+		css +=     'color: #fff !important;';
+		css +=     'font-size: 11px;';
+		css +=     'font-weight: bold;';
+		css +=     'padding: 2px 7px;';
+		css +=     'position: relative;';
+		css +=     'top: -2px;';
+		css +=     'left: 7px;';
+		css +=     'text-decoration: none;';
+		css +=     'border-radius: 2px;';
+		css += '}';
+		css += '#res .r a[class^="_hatenaBookmarkCounter"] span{';
+		css +=     'font-weight: normal;';
+		css += '}';
+		css += '#res .r a[class^="_hatenaBookmarkCounter"]:hover{';
+		css +=     'background-color: #f3cb7e;';
+		css +=     'color: #c87209 !important;';
+		css += '}';
+		css += '#res .r ._hatenaBookmarkCounter_0{';
+		css +=     'background-color: #93cfea;';
+		css += '}';
+		css += '#res .r ._hatenaBookmarkCounter_1{';
+		css +=     'background-color: #74c2e4';
+		css += '}';
+		css += '#res .r ._hatenaBookmarkCounter_2{';
+		css +=     'background-color: #5bb8df';
+		css += '}';
+		css += '#res .r ._hatenaBookmarkCounter_3{';
+		css +=     'background-color: #39a9d9';
+		css += '}';
 		GM_addStyle( css );
 	})();
 
