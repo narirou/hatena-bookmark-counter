@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           Google HatenaBookmark Counter
-// @version        0.1
+// @version        0.2
 // @namespace      https://github.com/narirou/
 // @author         narirou
 // @description    Add HatenaBookmark Counter on Google search results.
@@ -66,13 +66,13 @@
 		mutations.forEach( function( mutation ) {
 			var nodes = mutation.addedNodes;
 			for( var i = 0, len = nodes.length; i < len; i++ ) {
-				if( nodes[i].id === 'ires' || nodes[i].id === 'rso' ) {
-					counter( nodes[i] );
+				var node = nodes[i];
+				if( node.id === 'ires' || node.id === 'rso' ) {
+					counter( node );
 				}
 			}
 		});
 	});
-
 	observer.observe( res, { childList: true, subtree: true } );
 
 	// HTML
