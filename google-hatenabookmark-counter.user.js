@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           Google HatenaBookmark Counter
-// @version        0.2.1
+// @version        0.2.2
 // @namespace      https://github.com/narirou/
 // @author         narirou
 // @description    Add HatenaBookmark Counter on Google search results.
@@ -15,8 +15,8 @@
 (function( window, document ) {
 
 	// Target Element
-	var main = document.getElementById( 'main' ),
-		res  = document.getElementById( 'res' );
+	var main = document.getElementById( 'main' )
+	  , res  = document.getElementById( 'res' );
 
 	// Counter
 	var counter = function( target ) {
@@ -25,9 +25,9 @@
 		var items = target.getElementsByTagName( 'h3' );
 
 		for( var i = 0, len = items.length; i < len; i++ ) {
-			var item = items[i],
-				link = item.childNodes[0],
-				url = 'http://b.hatena.ne.jp/entry/json/?url=' + encodeURI( link.href );
+			var item = items[i]
+			  , link = item.childNodes[0]
+			  , url = 'http://b.hatena.ne.jp/entry/json/?url=' + encodeURI( link.href );
 
 			// remove tracking
 			link.removeAttribute( 'onmousedown' );
@@ -90,7 +90,7 @@
 				var nodes = record.addedNodes;
 				for( var i = 0, len = nodes.length; i < len; i++ ) {
 					var node = nodes[i];
-					if( node.id === 'ires' || node.id === 'rso' ) {
+					if( node && (node.id === 'ires' || node.id === 'rso') ) {
 						counter( node );
 					}
 				}
