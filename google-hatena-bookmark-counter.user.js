@@ -15,8 +15,7 @@
 (function( window, document ) {
 
 	// Target Element
-	var main = document.getElementById( 'main' )
-	  , res  = document.getElementById( 'res' );
+	var main = document.getElementById( 'main' );
 
 	// Counter
 	var counter = function( target ) {
