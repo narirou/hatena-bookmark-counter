@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name           Google HatenaBookmark Counter
+// @name           Hatena Bookmark Counter - Google
 // @version        0.2.2
 // @namespace      https://github.com/narirou/
 // @author         narirou
-// @description    Add HatenaBookmark Counter on Google search results.
+// @description    Adding HatenaBookmark Counter on Google search results.
 // @include        http://www.google.tld/*
 // @include        https://www.google.tld/*
 // @grant          GM_xmlhttpRequest
