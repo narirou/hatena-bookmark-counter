@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name           Hatena Bookmark Counter - Yahoo! JAPAN
-// @version        0.0.1
+// @version        0.0.2
 // @namespace      https://github.com/narirou/
 // @author         narirou
-// @description    Adding HatenaBookmark Counter on Yahoo! JAPAN search results.
+// @description    Adding Hatena Bookmark Counter on Yahoo! JAPAN search results.
 // @include        http://search.yahoo.co.jp/*
 // @include        https://search.yahoo.co.jp/*
 // @grant          GM_xmlhttpRequest
@@ -104,7 +104,7 @@
 		'#WS2m .w{',
 			'word-break: normal;',
 		'}',
-		'#WS2m .w a[class^="_hatenaBookmarkCounter"]{',
+		'#WS2m h3 a[class^="_hatenaBookmarkCounter"]{',
 			'color: #fff !important;',
 			'font-size: 11px;',
 			'font-weight: bold;',
@@ -116,23 +116,23 @@
 			'border-radius: 2px;',
 			'white-space: nowrap;',
 		'}',
-		'#WS2m .w a[class^="_hatenaBookmarkCounter"] span{',
+		'#WS2m h3 a[class^="_hatenaBookmarkCounter"] span{',
 			'font-weight: normal;',
 		'}',
-		'#WS2m .w a[class^="_hatenaBookmarkCounter"]:hover{',
+		'#WS2m h3 a[class^="_hatenaBookmarkCounter"]:hover{',
 			'background-color: #f3cb7e;',
 			'color: #c87209 !important;',
 		'}',
-		'#WS2m .w ._hatenaBookmarkCounter_0{',
+		'#WS2m h3 ._hatenaBookmarkCounter_0{',
 			'background-color: #93cfea;',
 		'}',
-		'#WS2m .w ._hatenaBookmarkCounter_1{',
+		'#WS2m h3 ._hatenaBookmarkCounter_1{',
 			'background-color: #74c2e4',
 		'}',
-		'#WS2m .w ._hatenaBookmarkCounter_2{',
+		'#WS2m h3 ._hatenaBookmarkCounter_2{',
 			'background-color: #5bb8df',
 		'}',
-		'#WS2m .w ._hatenaBookmarkCounter_3{',
+		'#WS2m h3 ._hatenaBookmarkCounter_3{',
 			'background-color: #39a9d9',
 		'}',
 	].join(''));
