@@ -52,11 +52,9 @@
 	counter.loadData = function() {
 		var url = window.location.href;
 
-		for( key in dataSet ) {
-			var data = dataSet[ key ];
-
-			if( data.match.test( url ) ) {
-				counter.data = data;
+		for( var key in dataSet ) {
+			if( dataSet[ key ].match.test( url ) ) {
+				counter.data = dataSet[ key ];
 				return true;
 			}
 		}
