@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           Hatena Bookmark Counter
-// @version        0.3.2
+// @version        0.3.3
 // @namespace      https://github.com/narirou/
 // @author         narirou
 // @description    Add hatena bookmark count to the search results.
@@ -105,8 +105,8 @@
 	// HTML
 	counter.addHtml = function( itemData, json ) {
 		for( var url in itemData ) {
-			var count = parseInt( json[ url ], 10 );
-			if( count === 0 ) return;
+			var count = json[ url ];
+			if( ! count ) continue;
 
 			var icon = document.createElement( 'a' );
 			icon.title = 'Hatena Bookmark';
