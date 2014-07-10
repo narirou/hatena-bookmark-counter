@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           Hatena Bookmark Counter
-// @version        0.3.2
+// @version        0.3.3
 // @namespace      https://github.com/narirou/
 // @author         narirou
 // @description    Add hatena bookmark count to the search results.
