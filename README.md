@@ -15,6 +15,11 @@ Ajax遷移やAutopagerize系のアドオンにも対応しています。
 </p>
 
 
+Install
+-------
+[download here](https://raw.githubusercontent.com/narirou/hatena-bookmark-counter/master/hatena-bookmark-counter.user.js)
+
+
 Supports
 --------
 google.com  
