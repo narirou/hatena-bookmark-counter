@@ -1,16 +1,29 @@
 Hatena Bookmark Counter
 =======================
 
-> Add HatenaBookmark Counter on search results.  
+> Add Hatena Bookmark Count to the search results.  
 > Supported Ajax Search ( Google Instant ) and Autopagerize.
 
-##### About
+[![MIT Licensed](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](http://opensource.org/licenses/MIT)
+
 Google や Yahoo! JAPAN の検索結果にはてなブックマーク数を表示するユーザースクリプトです。  
 Ajax遷移やAutopagerize系のアドオンにも対応しています。  
 
-##### Require
+
+<p align="center">
+	<img src="./screenshot.png" width="512" alt="はてなブックマークを表示した様子">
+</p>
+
+
+Supports
+--------
+google.com  
+google.co.jp  
+yahoo.co.jp  
+
+
+Require
+-------
  * Firefox : [Scriptish](https://addons.mozilla.org/firefox/addon/scriptish/) or [Greasemonkey](https://addons.mozilla.org/firefox/addon/greasemonkey/)  
  * Chrome : [TamperMonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo)
 
-##### License
-MIT Lisenced
