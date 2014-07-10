@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           Hatena Bookmark Counter
-// @version        0.3.0
+// @version        0.3.1
 // @namespace      https://github.com/narirou/
 // @author         narirou
 // @description    Add hatena bookmark count to the search results.
@@ -8,6 +8,7 @@
 // @include        https://www.google.tld/*
 // @include        http://search.yahoo.co.jp/*
 // @include        https://search.yahoo.co.jp/*
+// @updateURL      https://raw.githubusercontent.com/narirou/hatena-bookmark-counter/master/hatena-bookmark-counter.meta.js
 // @grant          GM_xmlhttpRequest
 // @grant          GM_addStyle
 // @run-at         document-end
@@ -21,10 +22,10 @@
 
 	var dataSet = {
 		google: {
-			match: /^https?:\/\/www\.google\..+/,
+			match: /^https?:\/\/www\.google\..+q=.+/,
 			mainId: 'main',
 			contentId: [ 'ires', 'rso' ],
-			selector: '#res h3',
+			selector: '#res .r',
 		},
 
 		yahooJapan: {
@@ -66,48 +67,55 @@
 	counter.count = function( target ) {
 		if( ! target ) return;
 
-		var items = target.getElementsByTagName( 'h3' );
+		var items = target.getElementsByTagName( 'h3' ),
+			itemData = {},
+			params = '';
 
 		for( var i = 0, len = items.length; i < len; i++ ) {
 			var item = items[i],
 				link = item.childNodes[0];
 
 			if( link.tagName && link.tagName.toLowerCase() === 'a' ) {
-				var url = 'http://b.hatena.ne.jp/entry/jsonlite/?url=' + encodeURI( link.href );
 
 				// remove tracking
 				link.removeAttribute( 'onmousedown' );
 
-				// add HatenaCounter
-				counter.requestJson( item, url );
+				itemData[ link.href ] = item;
+
+				params += ( i === 0 ) ? '?' : '&';
+				params += 'url=' + encodeURI( link.href );
 			}
 		}
+		counter.requestJson( itemData, params );
 	};
 
-	counter.requestJson = function( item, url ) {
+	counter.requestJson = function( itemData, params ) {
 		GM_xmlhttpRequest( {
 			method: 'GET',
-			url: url,
+			url: 'http://api.b.st-hatena.com/entry.counts' + params,
 			onload: function( response ) {
 				var data = response.responseText;
 				if( data === 'null' ) return;
 
-				counter.addHtml( item, JSON.parse( data ) );
+				counter.addHtml( itemData, JSON.parse( data ) );
 			}
 		});
 	};
 
 	// HTML
-	counter.addHtml = function( item, json ) {
-		var count = parseInt( json.count, 10 );
-		if( count === 0 ) return;
+	counter.addHtml = function( itemData, json ) {
+		for( var url in itemData ) {
+			var count = parseInt( json[ url ], 10 );
+			if( count === 0 ) return;
 
-		var icon = document.createElement( 'a' );
-		icon.title = 'Hatena Bookmark';
-		icon.href = json.entry_url;
-		icon.className = counter.className( count );
-		icon.innerHTML = count + ' <span>users</span>';
-		item.appendChild( icon );
+			var icon = document.createElement( 'a' );
+			icon.title = 'Hatena Bookmark';
+			icon.href = 'http://b.hatena.ne.jp/entry/' + url.replace( /^https?:\/\/(.*)$/, '$1' );
+			icon.className = counter.className( count );
+			icon.innerHTML = count + ' <span>users</span>';
+
+			itemData[ url ].appendChild( icon );
+		}
 	};
 
 	// ClassName
@@ -158,7 +166,8 @@
 
 	// CSS
 	counter.addCss = function() {
-		var selector = counter.data.selector
+		var selector = counter.data.selector;
+
 		GM_addStyle([
 			selector, '{',
 				'overflow-x: visible !important;',
