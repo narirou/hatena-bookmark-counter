@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           Hatena Bookmark Counter
-// @version        0.3.1
+// @version        0.3.2
 // @namespace      https://github.com/narirou/
 // @author         narirou
 // @description    Add hatena bookmark count to the search results.
@@ -82,8 +82,8 @@
 
 				itemData[ link.href ] = item;
 
-				params += ( i === 0 ) ? '?' : '&';
-				params += 'url=' + encodeURI( link.href );
+				params += ( i === 0 ) ? '?url=' : '&url=';
+				params += encodeURI( link.href );
 			}
 		}
 		counter.requestJson( itemData, params );
