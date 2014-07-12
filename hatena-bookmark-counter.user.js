@@ -109,7 +109,7 @@
 			counter.addHtml( itemData, JSON.parse( response.responseText ) );
 		};
 
-		GM_xmlhttpRequest( {
+		GM_xmlhttpRequest({ // jshint ignore:line
 			method: 'GET',
 			url: HATENA.COUNT_URL + params,
 			onload: parseData
@@ -179,7 +179,7 @@
 	counter.addCss = function() {
 		var selector = counter.data.selector;
 
-		GM_addStyle([
+		GM_addStyle([ // jshint ignore:line
 			selector, '{',
 				'overflow-x: visible !important;',
 				'display: inline !important;',
