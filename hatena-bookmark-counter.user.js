@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           Hatena Bookmark Counter
-// @version        0.3.3
+// @version        0.3.4
 // @namespace      https://github.com/narirou/
 // @author         narirou
 // @description    Add hatena bookmark count to the search results.
@@ -20,25 +20,32 @@
 
 	'use strict';
 
+	// Site Data
 	var dataSet = {
 		google: {
 			match: /^https?:\/\/www\.google\..+q=.+/,
 			mainId: 'main',
-			contentId: [ 'ires', 'rso' ],
-			selector: '#res .r',
+			contentIds: [ 'ires', 'rso' ],
+			selector: '#res h3',
 		},
 
 		yahooJapan: {
 			match: /^https?:\/\/search\.yahoo\.co\.jp\/.+/,
 			mainId: 'mIn',
-			contentId: 'WS2m',
+			contentIds: [ 'WS2m' ],
 			selector: '#WS2m h3',
 		}
 	};
 
+	// Hatena Boockmark API
+	var HATENA = {
+		ENTRY_URL: 'http://b.hatena.ne.jp/entry/',
+		COUNT_URL: 'http://api.b.st-hatena.com/entry.counts',
+		COUNT_LIMIT: 50,
+	};
 
 	// Counter
-	var counter = function( target ) {
+	var counter = function() {
 		if( counter.loadData() ) {
 			var main = document.getElementById( counter.data.mainId );
 
@@ -67,42 +74,48 @@
 	counter.count = function( target ) {
 		if( ! target ) return;
 
-		var items = target.getElementsByTagName( 'h3' ),
+		var items    = target.querySelectorAll( counter.data.selector ),
 			itemData = {},
-			params = '';
+			params   = '';
 
-		for( var i = 0, len = items.length; i < len; i++ ) {
-			var item = items[i],
-				link = item.childNodes[0];
+		for( var index = 0, len = items.length; index < len; index++ ) {
+			var item = items[ index ],
+				link = item.childNodes[ 0 ];
 
 			if( link.tagName && link.tagName.toLowerCase() === 'a' ) {
 
 				// remove tracking
 				link.removeAttribute( 'onmousedown' );
 
+				// set items
 				itemData[ link.href ] = item;
 
-				params += ( i === 0 ) ? '?url=' : '&url=';
+				// set params
+				params += ( index === 0 ) ? '?url=' : '&url=';
 				params += encodeURI( link.href );
+
+				// run request
+				if( index === len - 1 || index === HATENA.COUNT_LIMIT ) {
+					counter.request( itemData, params );
+					itemData = {};
+					params = '';
+				}
 			}
 		}
-		counter.requestJson( itemData, params );
 	};
 
-	counter.requestJson = function( itemData, params ) {
+	counter.request = function( itemData, params ) {
+		var parseData = function( response ) {
+			counter.addHtml( itemData, JSON.parse( response.responseText ) );
+		};
+
 		GM_xmlhttpRequest( {
 			method: 'GET',
-			url: 'http://api.b.st-hatena.com/entry.counts' + params,
-			onload: function( response ) {
-				var data = response.responseText;
-				if( data === 'null' ) return;
-
-				counter.addHtml( itemData, JSON.parse( data ) );
-			}
+			url: HATENA.COUNT_URL + params,
+			onload: parseData
 		});
 	};
 
-	// HTML
 	counter.addHtml = function( itemData, json ) {
 		for( var url in itemData ) {
 			var count = json[ url ];
@@ -110,7 +123,7 @@
 
 			var icon = document.createElement( 'a' );
 			icon.title = 'Hatena Bookmark';
-			icon.href = 'http://b.hatena.ne.jp/entry/' + url.replace( /^https?:\/\/(.*)$/, '$1' );
+			icon.href = HATENA.ENTRY_URL + url.replace( /^https?:\/\/(.*)$/, '$1' );
 			icon.className = counter.className( count );
 			icon.innerHTML = count + ' <span>users</span>';
 
@@ -118,50 +131,48 @@
 		}
 	};
 
-	// ClassName
 	counter.className = function( count ) {
 		var baseClassName = '_hatenaBookmarkCounter';
-		switch( false ) {
-			case !(count < 4):
-				return baseClassName + '_0';
-			case !(count < 10):
-				return baseClassName + '_1';
-			case !(count < 50):
-				return baseClassName + '_2';
-			default:
-				return baseClassName + '_3';
+		if( count < 4 ) {
+			return baseClassName + '_0';
+		}
+		else if( count < 10 ) {
+			return baseClassName + '_1';
+		}
+		else if( count < 50 ) {
+			return baseClassName + '_2';
+		}
+		else {
+			return baseClassName + '_3';
 		}
 	};
 
 	// Insert Event
 	counter.observe = function( main ) {
 		var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
-		if( MutationObserver ) {
-			var contentId = counter.data.contentId;
 
-			var recorder = function( records ) {
-				records.forEach( function( record ) {
-					var nodes = record.addedNodes;
+		if( ! MutationObserver ) return;
 
-					for( var i = 0, len = nodes.length; i < len; i++ ) {
-						var node = nodes[i];
-						if( ! node ) continue;
+		var eachMutations = function( mutations ) {
+			mutations.forEach( eachRecords );
+		};
 
-						if( Array.isArray( contentId ) && contentId.indexOf( node.id ) !== -1 ) {
-							window.onload = null;
-							counter.count( node );
-						}
-						else if( typeof contentId === 'string' && contentId === node.id ) {
-							window.onload = null;
-							counter.count( node );
-						}
-					}
-				});
-			};
+		var eachRecords = function( record ) {
+			var nodes = record.addedNodes;
 
-			var observer = new MutationObserver( recorder );
-			observer.observe( main, { childList: true, subtree: true } );
-		}
+			for( var index = 0, len = nodes.length; index < len; index++ ) {
+				var node = nodes[ index ];
+				if( ! node ) return;
+				if( counter.data.contentIds.indexOf( node.id ) !== -1 ){
+					window.onload = null;
+					counter.count( node );
+				}
+			}
+		};
+
+		var observer = new MutationObserver( eachMutations );
+
+		observer.observe( main, { childList: true, subtree: true } );
 	};
 
 	// CSS
