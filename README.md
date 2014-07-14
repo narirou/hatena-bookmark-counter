@@ -25,6 +25,7 @@ Supports
 google.com  
 google.co.jp  
 yahoo.co.jp  
+bing.com
 
 
 Require

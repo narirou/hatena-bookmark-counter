@@ -1,18 +1,20 @@
 // ==UserScript==
-// @name           Hatena Bookmark Counter
-// @version        0.3.4
-// @namespace      https://github.com/narirou/
-// @author         narirou
-// @description    Add hatena bookmark count to the search results.
-// @include        http://www.google.tld/*
-// @include        https://www.google.tld/*
-// @include        http://search.yahoo.co.jp/*
-// @include        https://search.yahoo.co.jp/*
-// @updateURL      https://raw.githubusercontent.com/narirou/hatena-bookmark-counter/master/hatena-bookmark-counter.meta.js
-// @grant          GM_xmlhttpRequest
-// @grant          GM_addStyle
-// @run-at         document-end
-// @license        MIT Lisense
+// @name        Hatena Bookmark Counter
+// @version     0.3.5
+// @namespace   https://github.com/narirou/
+// @author      narirou
+// @description Add hatena bookmark count to the search results.
+// @include     http://www.google.tld/*
+// @include     https://www.google.tld/*
+// @include     http://search.yahoo.co.jp/*
+// @include     https://search.yahoo.co.jp/*
+// @include     http://www.bing.com/search*
+// @include     https://www.bing.com/search*
+// @updateURL   https://raw.githubusercontent.com/narirou/hatena-bookmark-counter/master/hatena-bookmark-counter.meta.js
+// @grant       GM_xmlhttpRequest
+// @grant       GM_addStyle
+// @run-at      document-end
+// @license     MIT Lisense
 // ==/UserScript==
 
 
@@ -34,6 +36,13 @@
 			mainId: 'mIn',
 			contentIds: [ 'WS2m' ],
 			selector: '#WS2m h3',
+		},
+
+		bing: {
+			match: /^https?:\/\/www\.bing\.com\/search\?.+/,
+			mainId: 'b_content',
+			contentClasses: [ 'b_algo' ],
+			selector: '.b_algo h2'
 		}
 	};
 
@@ -94,13 +103,17 @@
 				params += ( index === 0 ) ? '?url=' : '&url=';
 				params += encodeURI( link.href );
 
-				// run request
-				if( index === len - 1 || index === HATENA.COUNT_LIMIT ) {
+				// request when limit
+				if( (index + 1) % HATENA.COUNT_LIMIT === 0 ) {
 					counter.request( itemData, params );
 					itemData = {};
 					params = '';
 				}
 			}
+		}
+
+		if( params ) {
+			counter.request( itemData, params );
 		}
 	};
 
@@ -150,7 +163,6 @@
 	// Insert Event
 	counter.observe = function( main ) {
 		var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
-
 		if( ! MutationObserver ) return;
 
 		var eachMutations = function( mutations ) {
@@ -158,12 +170,15 @@
 		};
 
 		var eachRecords = function( record ) {
-			var nodes = record.addedNodes;
+			var nodes   = record.addedNodes,
+				ids     = counter.data.contentIds,
+				classes = counter.data.contentClasses;
 
 			for( var index = 0, len = nodes.length; index < len; index++ ) {
 				var node = nodes[ index ];
-				if( ! node ) return;
-				if( counter.data.contentIds.indexOf( node.id ) !== -1 ){
+
+				if( ( ids && ids.indexOf( node.id ) !== -1 ) ||
+					( classes && classes.indexOf( node.className ) !== -1 ) ) {
 					window.onload = null;
 					counter.count( node );
 				}
@@ -194,6 +209,7 @@
 				'left: 7px;',
 				'text-decoration: none;',
 				'border-radius: 2px;',
+				'white-space: nowrap;',
 			'}',
 			selector, ' a[class^="_hatenaBookmarkCounter"] span{',
 				'font-weight: normal;',

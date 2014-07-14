@@ -18,12 +18,13 @@
 	"strict": true,
 	"maxparams": 5,
 	"maxdepth": 5,
-	"maxstatements": 10,
-	"maxcomplexity": 10,
-	"maxlen": 90,
+	"maxstatements": 15,
+	"maxcomplexity": 15,
+	"maxlen": 130,
 	"quotmark": "single",
 	"trailing": true,
 
-	"smarttabs": false,
+	"smarttabs": true,
+	"browser": true,
 	"predef": ["GM_xmlhttpRequest", "GM_addStyle"]
 }
