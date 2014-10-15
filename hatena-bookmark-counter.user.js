@@ -57,6 +57,7 @@
 	var counter = function() {
 		if( counter.loadData() ) {
 			var main = document.getElementById( counter.data.mainId );
+			if( ! main ) return;
 
 			window.onload = function() {
 				counter.count( main );
