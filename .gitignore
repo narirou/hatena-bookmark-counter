@@ -2,7 +2,8 @@
 .tmp
 
 # Tools
-*.sublime-*
+*.sublime-workspace
+*.sublime-project
 
 # OS Generated Files
 .DS_Store
