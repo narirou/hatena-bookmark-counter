@@ -30,6 +30,6 @@ bing.com
 
 Require
 -------
- * Firefox : [Scriptish](https://addons.mozilla.org/firefox/addon/scriptish/) or [Greasemonkey](https://addons.mozilla.org/firefox/addon/greasemonkey/)  
+ * Firefox : [Greasemonkey](https://addons.mozilla.org/firefox/addon/greasemonkey/)  
  * Chrome : [TamperMonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo)
 
