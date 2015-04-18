@@ -29,6 +29,8 @@
 			match: /^https?:\/\/www\.google\..+q=.+/,
 			mainId: 'main',
 			contentIds: [ 'ires', 'rso' ],
+			contentClasses: [ 'g' ],
+			contentAttrs: [ 'data-ved' ],
 			selector: '#res h3',
 		},
 
@@ -58,11 +60,13 @@
 	var counter = function() {
 		if( counter.loadData() ) {
 			var main = document.getElementById( counter.data.mainId );
-			if( ! main ) return;
 
-			window.onload = function() {
+			var listener = function() {
 				counter.count( main );
+				window.removeEventListener( 'load', listener, false );
 			};
+			window.addEventListener( 'load', listener, false );
+
 			counter.addCss();
 			counter.observe( main );
 		}
@@ -164,7 +168,10 @@
 
 	// Insert Event
 	counter.observe = function( main ) {
-		var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+		var MutationObserver = window.MutationObserver ||
+		                       window.WebKitMutationObserver ||
+		                       window.MozMutationObserver;
+
 		if( ! MutationObserver ) return;
 
 		var eachMutations = function( mutations ) {
@@ -172,18 +179,35 @@
 		};
 
 		var eachRecords = function( record ) {
-			var nodes   = record.addedNodes,
-				ids     = counter.data.contentIds,
-				classes = counter.data.contentClasses;
+			var nodes = record.addedNodes;
 
 			for( var index = 0, len = nodes.length; index < len; index++ ) {
 				var node = nodes[ index ];
 
-				if( ( ids && ids.indexOf( node.id ) !== -1 ) ||
-					( classes && classes.indexOf( node.className ) !== -1 ) ) {
-					window.onload = null;
-					counter.count( node );
+				if( node.nodeType === 1 ) {
+					eachNode( node );
 				}
+			}
+		};
+
+		var eachNode = function( node ) {
+			var ids     = counter.data.contentIds,
+				classes = counter.data.contentClasses,
+				attrs   = counter.data.contentAttrs;
+
+			// Search Id & Class
+			if( ( ids && ids.indexOf( node.id ) !== -1 ) ||
+				( classes && classes.indexOf( node.className ) !== -1 ) ) {
+				return counter.count( node );
+			}
+
+			// Search Attribute
+			if( attrs ) {
+				attrs.forEach( function( attr ) {
+					if( node.getAttribute( attr ) ) {
+						counter.count( node );
+					}
+				});
 			}
 		};
 
