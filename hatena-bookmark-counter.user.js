@@ -51,6 +51,7 @@
 
 	// Hatena Boockmark API
 	var HATENA = {
+		TITLE: 'Hatena Bookmark',
 		ENTRY_URL: 'http://b.hatena.ne.jp/entry/',
 		COUNT_URL: 'http://api.b.st-hatena.com/entry.counts',
 		COUNT_LIMIT: 50,
@@ -148,7 +149,7 @@
 			if( ! count ) continue;
 
 			var icon = document.createElement( 'a' );
-			icon.title = 'Hatena Bookmark';
+			icon.title = HATENA.TITLE;
 			icon.href = HATENA.ENTRY_URL + url.replace( /^https?:\/\/(.*)$/, '$1' );
 			icon.className = counter.className( count );
 			icon.innerHTML = count + ' <span>users</span>';
@@ -231,7 +232,7 @@
 				'overflow-x: visible !important;',
 				'display: inline !important;',
 			'}',
-			selector, ' a[class^="' +  BASE_CLASS + '"]{',
+			selector, ' a[class^="', BASE_CLASS, '"]{',
 				'color: #fff !important;',
 				'font-size: 11px;',
 				'font-weight: bold;',
@@ -243,24 +244,24 @@
 				'border-radius: 2px;',
 				'white-space: nowrap;',
 			'}',
-			selector, ' a[class^="' +  BASE_CLASS + '"] span{',
+			selector, ' a[class^="', BASE_CLASS, '"] span{',
 				'font-weight: normal;',
 			'}',
-			selector, ' a[class^="' +  BASE_CLASS + '"]:hover{',
+			selector, ' a[class^="', BASE_CLASS, '"]:hover{',
 				'background-color: #f3cb7e;',
 				'color: #c87209 !important;',
 				'text-decoration: none !important;',
 			'}',
-			selector, ' .' +  BASE_CLASS + '_0{',
+			selector, ' .', BASE_CLASS, '_0{',
 				'background-color: #93cfea;',
 			'}',
-			selector, ' .' +  BASE_CLASS + '_1{',
+			selector, ' .', BASE_CLASS, '_1{',
 				'background-color: #74c2e4',
 			'}',
-			selector, ' .' +  BASE_CLASS + '_2{',
+			selector, ' .', BASE_CLASS, '_2{',
 				'background-color: #5bb8df',
 			'}',
-			selector, ' .' +  BASE_CLASS + '_3{',
+			selector, ' .', BASE_CLASS, '_3{',
 				'background-color: #39a9d9',
 			'}',
 		].join(''));
