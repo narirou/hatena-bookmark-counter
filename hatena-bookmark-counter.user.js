@@ -56,6 +56,8 @@
 		COUNT_LIMIT: 50,
 	};
 
+	var BASE_CLASS = '__hbc';
+
 	// Counter
 	var counter = function() {
 		if( counter.loadData() ) {
@@ -101,6 +103,11 @@
 
 				// remove tracking
 				link.removeAttribute( 'onmousedown' );
+
+				// check
+				if( link.getAttribute( BASE_CLASS ) ) continue;
+
+				link.setAttribute( BASE_CLASS, true );
 
 				// set items
 				itemData[ link.href ] = item;
@@ -151,18 +158,17 @@
 	};
 
 	counter.className = function( count ) {
-		var baseClassName = '_hatenaBookmarkCounter';
 		if( count < 4 ) {
-			return baseClassName + '_0';
+			return BASE_CLASS + '_0';
 		}
 		else if( count < 10 ) {
-			return baseClassName + '_1';
+			return BASE_CLASS + '_1';
 		}
 		else if( count < 50 ) {
-			return baseClassName + '_2';
+			return BASE_CLASS + '_2';
 		}
 		else {
-			return baseClassName + '_3';
+			return BASE_CLASS + '_3';
 		}
 	};
 
@@ -225,7 +231,7 @@
 				'overflow-x: visible !important;',
 				'display: inline !important;',
 			'}',
-			selector, ' a[class^="_hatenaBookmarkCounter"]{',
+			selector, ' a[class^="' +  BASE_CLASS + '"]{',
 				'color: #fff !important;',
 				'font-size: 11px;',
 				'font-weight: bold;',
@@ -237,24 +243,24 @@
 				'border-radius: 2px;',
 				'white-space: nowrap;',
 			'}',
-			selector, ' a[class^="_hatenaBookmarkCounter"] span{',
+			selector, ' a[class^="' +  BASE_CLASS + '"] span{',
 				'font-weight: normal;',
 			'}',
-			selector, ' a[class^="_hatenaBookmarkCounter"]:hover{',
+			selector, ' a[class^="' +  BASE_CLASS + '"]:hover{',
 				'background-color: #f3cb7e;',
 				'color: #c87209 !important;',
 				'text-decoration: none !important;',
 			'}',
-			selector, ' ._hatenaBookmarkCounter_0{',
+			selector, ' .' +  BASE_CLASS + '_0{',
 				'background-color: #93cfea;',
 			'}',
-			selector, ' ._hatenaBookmarkCounter_1{',
+			selector, ' .' +  BASE_CLASS + '_1{',
 				'background-color: #74c2e4',
 			'}',
-			selector, ' ._hatenaBookmarkCounter_2{',
+			selector, ' .' +  BASE_CLASS + '_2{',
 				'background-color: #5bb8df',
 			'}',
-			selector, ' ._hatenaBookmarkCounter_3{',
+			selector, ' .' +  BASE_CLASS + '_3{',
 				'background-color: #39a9d9',
 			'}',
 		].join(''));
