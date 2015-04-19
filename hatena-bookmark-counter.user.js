@@ -26,7 +26,7 @@
 	// Site Data
 	var dataSet = {
 		google: {
-			match: /^https?:\/\/www\.google\..+q=.+/,
+			match: /^https?:\/\/www\.google\..+$/,
 			mainId: 'main',
 			contentIds: [ 'ires', 'rso' ],
 			contentClasses: [ 'g' ],
@@ -35,14 +35,14 @@
 		},
 
 		yahooJapan: {
-			match: /^https?:\/\/search\.yahoo\.co\.jp\/.+/,
+			match: /^https?:\/\/search\.yahoo\.co\.jp\/.+$/,
 			mainId: 'mIn',
 			contentIds: [ 'WS2m' ],
 			selector: '#WS2m h3',
 		},
 
 		bing: {
-			match: /^https?:\/\/www\.bing\.com\/search\?.+/,
+			match: /^https?:\/\/www\.bing\.com\/search\?.+$/,
 			mainId: 'b_content',
 			contentClasses: [ 'b_algo' ],
 			selector: '.b_algo h2'
