@@ -102,13 +102,13 @@
 
 			if( link.tagName && link.tagName.toLowerCase() === 'a' ) {
 
-				// remove tracking
-				link.removeAttribute( 'onmousedown' );
-
 				// check
 				if( link.getAttribute( BASE_CLASS ) ) continue;
 
 				link.setAttribute( BASE_CLASS, true );
+
+				// remove tracking
+				link.removeAttribute( 'onmousedown' );
 
 				// set items
 				itemData[ link.href ] = item;
