@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        Hatena Bookmark Counter
-// @version     0.4.1
+// @version     0.4.2
 // @namespace   https://github.com/narirou/
 // @author      narirou
 // @description Add hatena bookmark count to the search results.
@@ -150,7 +150,10 @@
 
 			var icon = document.createElement( 'a' );
 			icon.title = HATENA.TITLE;
-			icon.href = HATENA.ENTRY_URL + url.replace( /^https?:\/\/(.*)$/, '$1' );
+
+			var urlFragments = /^http(s?):\/\/(.*)$/.exec( url );
+			icon.href = HATENA.ENTRY_URL + (urlFragments[1] === 's' ? 's/' : '') + urlFragments[2];
+
 			icon.className = counter.className( count );
 			icon.innerHTML = count + ' <span>users</span>';
 
